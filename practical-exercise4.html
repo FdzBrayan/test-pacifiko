@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical Exercise 4</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Shopping Cart</h1>
+
+    <div class="row">
+        <div class="col-4 ml-3">
+            <ul id="top" class="list-group">
+            </ul>
+        </div>
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+
+            // Cart list of dictionaries
+            var cart = [
+                { 'product_id': 4, 'quantity': 2 },
+                { 'product_id': 2, 'quantity': 3 },
+                { 'product_id': 3, 'quantity': 11 },
+            ];
+
+            // Products dictionaries
+            var products = [
+                { 'product_id': 1, 'product_name': 'Laptop Lenovo', 'price': 400000.00 },
+                { 'product_id': 2, 'product_name': 'Laptop HP', 'price': 359000.00 },
+                { 'product_id': 3, 'product_name': 'Celular Samsung', 'price': 125000.00 },
+                { 'product_id': 4, 'product_name': 'Soporte pantalla 43"', 'price': 18000.00 },
+                { 'product_id': 5, 'product_name': 'Mouse inalámbrico', 'price': 25000.00 }
+            ];
+
+            getTopSellingProducts(1);
+
+            function getTopSellingProducts(top)
+            {
+                cart.sort(function (a, b) {
+                    return b.quantity - a.quantity;
+                });
+
+                var topSellingProducts = cart.slice(0, top);
+
+                console.log(topSellingProducts);
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical Exercise 2</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <h1>Shopping Cart</h1>
+
+    <div class="row">
+        <div class="col-4">
+            <ul id="cartList">
+                <li data-product-id="1" data-quantity="2">Product 1</li>
+                <li data-product-id="2" data-quantity="3">Product 2</li>
+                <li data-product-id="3" data-quantity="1">Product 3</li>
+            </ul>
+            <p>Total Price: <span id="totalPrice">0.00</span></p>
+        </div>
+    </div>
+
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            // Cart list of dictionaries
+            var cart = [
+                { 'product_id': 4, 'quantity': 2 },
+                { 'product_id': 2, 'quantity': 1 }
+            ];
+
+            // Products dictionaries
+            var products = [
+                { 'product_id': 1, 'product_name': 'Laptop Lenovo', 'price': 400000.00 },
+                { 'product_id': 2, 'product_name': 'Laptop HP', 'price': 359000.00 },
+                { 'product_id': 3, 'product_name': 'Celular Samsung', 'price': 125000.00 },
+                { 'product_id': 4, 'product_name': 'Soporte pantalla 43"', 'price': 18000.00 }
+            ];
+
+            showCart();
+            updateTotalPrice();
+
+            // Function to calculate the total price
+            function calculateTotalPrice() {
+
+                var total = 0;
+
+                for (var i = 0; i < cart.length; i++)
+                {
+                    var item = cart[i];
+                    var productId = item['product_id'];
+                    var quantity = item['quantity'];
+
+                    var product = products.find(product => product.product_id === parseInt(productId));
+
+                    total += product.price * quantity;
+
+                }
+
+                return total;
+            }
+
+            function showCart()
+            {
+                $('#cartList').empty();
+
+                for (var i = 0; i < cart.length; i++)
+                {
+                    var item = cart[i];
+                    var productId = item['product_id'];
+                    var quantity = item['quantity'];
+
+                    var product = products.find(product => product.product_id === parseInt(productId));
+
+                    $('#cartList').append(
+                            '<li data-product-id="' + productId + '" data-quantity="' + quantity + '" class="list-group-item d-flex justify-content-between align-items-center">' +
+                                '<p>' + product.product_name + '</p> Cantidad: ' + quantity +
+                                '<span class="badge badge-primary badge-pill">$' + product.price + '</span>' +
+                            '</li>'
+                        );
+                }
+
+            }
+
+            function updateTotalPrice()
+            {
+                var totalPrice = calculateTotalPrice();
+                $('#totalPrice').text(totalPrice);
+            }
+
+        });
+
+    </script>
+</body>
+
+</html>
