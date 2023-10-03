@@ -23,20 +23,18 @@
         </div>
     </div>
 
-
-
     <script>
 
         $(document).ready(function () {
 
             // Cart list of dictionaries
-            var cart = [
-                { 'product_id': 4, 'quantity': 2 },
+            const cart = [
+                { 'product_id': 4, 'quantity': 3 },
                 { 'product_id': 2, 'quantity': 1 }
             ];
 
             // Products dictionaries
-            var products = [
+            const products = [
                 { 'product_id': 1, 'product_name': 'Laptop Lenovo', 'price': 400000.00 },
                 { 'product_id': 2, 'product_name': 'Laptop HP', 'price': 359000.00 },
                 { 'product_id': 3, 'product_name': 'Celular Samsung', 'price': 125000.00 },
@@ -47,50 +45,44 @@
             updateTotalPrice();
 
             // Function to calculate the total price
-            function calculateTotalPrice() {
+            function calculateTotalPrice()
+            {
+                return cart.reduce((total, item) => {
 
-                var total = 0;
+                    let product = products.find(product => product.product_id === item.product_id);
+                    
+                    return total + product.price * item.quantity;
 
-                for (var i = 0; i < cart.length; i++)
-                {
-                    var item = cart[i];
-                    var productId = item['product_id'];
-                    var quantity = item['quantity'];
-
-                    var product = products.find(product => product.product_id === parseInt(productId));
-
-                    total += product.price * quantity;
-
-                }
-
-                return total;
+                }, 0);
             }
 
             function showCart()
             {
                 $('#cartList').empty();
 
-                for (var i = 0; i < cart.length; i++)
-                {
-                    var item = cart[i];
-                    var productId = item['product_id'];
-                    var quantity = item['quantity'];
+                cart.forEach(item => {
 
-                    var product = products.find(product => product.product_id === parseInt(productId));
+                    const {product_id, quantity} = item;
+
+                    const {product_name, price} = products.find(product => product.product_id === product_id);
 
                     $('#cartList').append(
-                            '<li data-product-id="' + productId + '" data-quantity="' + quantity + '" class="list-group-item d-flex justify-content-between align-items-center">' +
-                                '<p>' + product.product_name + '</p> Cantidad: ' + quantity +
-                                '<span class="badge badge-primary badge-pill">$' + product.price + '</span>' +
-                            '</li>'
-                        );
-                }
+
+                        `
+                            <li data-product-id="${product_id}" data-quantity="${quantity}" class="list-group-item d-flex justify-content-between align-items-center">
+                                <p>${product_name}</p> Cantidad: ${quantity}
+                                <span class="badge badge-primary badge-pill">$ ${price} </span>
+                            </li>
+                        `
+                    );
+                    
+                });
 
             }
 
             function updateTotalPrice()
             {
-                var totalPrice = calculateTotalPrice();
+                let totalPrice = calculateTotalPrice();
                 $('#totalPrice').text(totalPrice);
             }
 

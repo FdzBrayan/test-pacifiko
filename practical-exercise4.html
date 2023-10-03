@@ -14,8 +14,7 @@
 
     <div class="row">
         <div class="col-4 ml-3">
-            <ul id="top" class="list-group">
-            </ul>
+            <ul id="product-top" class="list-group" class="mt-1"></ul>
         </div>
     </div>
 
@@ -24,14 +23,16 @@
         $(document).ready(function () {
 
             // Cart list of dictionaries
-            var cart = [
+            const orders = [
                 { 'product_id': 4, 'quantity': 2 },
                 { 'product_id': 2, 'quantity': 3 },
                 { 'product_id': 3, 'quantity': 11 },
+                { 'product_id': 4, 'quantity': 10 },
+                { 'product_id': 2, 'quantity': 10 },
             ];
 
             // Products dictionaries
-            var products = [
+            const products = [
                 { 'product_id': 1, 'product_name': 'Laptop Lenovo', 'price': 400000.00 },
                 { 'product_id': 2, 'product_name': 'Laptop HP', 'price': 359000.00 },
                 { 'product_id': 3, 'product_name': 'Celular Samsung', 'price': 125000.00 },
@@ -39,17 +40,32 @@
                 { 'product_id': 5, 'product_name': 'Mouse inalámbrico', 'price': 25000.00 }
             ];
 
-            getTopSellingProducts(1);
+            $('#product-top').html(JSON.stringify(getTopSellingProducts(2)));
+
 
             function getTopSellingProducts(top)
             {
-                cart.sort(function (a, b) {
+                let productTotal = [];
+
+                orders.forEach(order => {
+
+                    let orderFound = productTotal.find(item => item.product_id === order.product_id);
+
+                    if (orderFound)
+                    {
+                        orderFound.quantity += order.quantity;
+                    }
+                    else
+                    {
+                        productTotal.push({ 'product_id': order.product_id, 'quantity': order.quantity });
+                    }
+                });
+
+                productTotal.sort(function (a, b) {
                     return b.quantity - a.quantity;
                 });
 
-                var topSellingProducts = cart.slice(0, top);
-
-                console.log(topSellingProducts);
+                return productTotal.slice(0, top);
             }
 
         });

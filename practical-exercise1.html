@@ -20,7 +20,7 @@
         $(document).ready(function () {
 
             // Products dictionaries
-            var products = [
+            const products = [
                 { 'product_id': 1, 'product_name': 'Laptop Lenovo',        'price': 400000.00 },
                 { 'product_id': 2, 'product_name': 'Laptop HP',            'price': 359000.00 },
                 { 'product_id': 3, 'product_name': 'Celular Samsung',      'price': 125000.00 },
@@ -28,35 +28,32 @@
             ];
 
             // Function to search for a product by name
-            function filterProductsByName(targetName)
-            {
-                return products.filter(function (product) {
-                    return product['product_name'].toLowerCase().includes(targetName.toLowerCase());
-                });
-            }
+
+            const filterProductsByName = (targetName) => products.filter(product => product['product_name'].toLowerCase().includes(targetName.toLowerCase()));
 
             $('#product-search').on('input', function () {
 
-                var searchTerm = $(this).val();
+                let searchTerm = $(this).val();
 
-                var results = filterProductsByName(searchTerm);
+                let results = filterProductsByName(searchTerm);
 
                 // Display the results
                 $('#product-results').empty();
 
                 if (results.length > 0)
                 {
-                    for (var i = 0; i < results.length; i++)
-                    {
-                        var product = results[i];
 
-                        $('#product-results').append(
-                            '<li class="list-group-item d-flex justify-content-between align-items-center">' +
-                                '<p>Product ID: ' + product['product_id'] + '</p>' + product['product_name'] +
-                                '<span class="badge badge-primary badge-pill">$' + product['price'] + '</span>' +
-                            '</li>'
-                        );
-                    }
+                    results.forEach(item => {
+
+                            const {product_id, product_name, price} = item;
+
+                            $('#product-results').append(
+                                `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <p>Product ID: ${product_id}</p> ${product_name}
+                                    <span class="badge badge-primary badge-pill">$ ${price} </span>
+                                </li>`
+                            );
+                    });
                 }
                 else
                 {
